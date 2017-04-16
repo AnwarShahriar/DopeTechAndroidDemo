@@ -40,7 +40,7 @@ internal class GistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
   private val textGistName: TextView = itemView.findViewById(android.R.id.text1) as TextView
 
   fun bind(data: Gist) {
-    val gistName = data.files.entries.iterator().next().value.fileName
+    val gistName = data.files?.entries?.iterator()?.next()?.value?.fileName
     textGistName.text = gistName
   }
 }
