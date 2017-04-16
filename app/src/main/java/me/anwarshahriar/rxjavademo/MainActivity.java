@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
   RecyclerView gistList;
   EditText fieldUsername;
+  View progress;
+  View textGistStatus;
 
   Disposable disposable;
 
@@ -46,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
     gistList = (RecyclerView) findViewById(R.id.gist_list);
     fieldUsername = (EditText) findViewById(R.id.field_username);
+    progress = findViewById(R.id.progress);
+    textGistStatus = findViewById(R.id.text_gist_status);
+
+    progress.setVisibility(View.GONE);
+    textGistStatus.setVisibility(View.VISIBLE);
 
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
     gistList.setLayoutManager(layoutManager);
@@ -61,13 +68,21 @@ public class MainActivity extends AppCompatActivity {
           if (username.length() == 0) {
             Toast.makeText(getApplicationContext(), "Please enter an username", Toast.LENGTH_SHORT)
                 .show();
-            return true;
+            return false;
           }
+
+          adapter.setData(new ArrayList<Gist>());
+          textGistStatus.setVisibility(View.GONE);
+          progress.setVisibility(View.VISIBLE);
 
           disposable = getGistsObservalbe(username).subscribeOn(Schedulers.io())
               .observeOn(AndroidSchedulers.mainThread())
               .subscribe(new Consumer<List<Gist>>() {
                 @Override public void accept(@NonNull List<Gist> gists) throws Exception {
+                  progress.setVisibility(View.GONE);
+                  if (gists.size() == 0) {
+                    textGistStatus.setVisibility(View.VISIBLE);
+                  }
                   adapter.setData(gists);
                 }
               });
