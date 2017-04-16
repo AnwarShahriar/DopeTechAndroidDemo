@@ -6,6 +6,8 @@ This demo shows a simple list of [Gists](https://gist.github.com/), made by a sp
 3. [Dagger 2](https://google.github.io/dagger/android.html)
 4. [MVP UI pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93presenter)
 
+[first_screen]: https://github.com/AnwarShahriar/DopeTechAndroidDemo/blob/master/assets/one.png "List of gists"
+[second_screen]: https://github.com/AnwarShahriar/DopeTechAndroidDemo/blob/master/assets/two.png "Web preview of a Gist"
 
 ---
 
