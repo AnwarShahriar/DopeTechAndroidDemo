@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), GistView {
     progress.visibility = View.GONE
   }
 
-  override fun getUsername(): String {
+  override fun getUsername(): String? {
     return fieldUsername.text.toString()
   }
 
