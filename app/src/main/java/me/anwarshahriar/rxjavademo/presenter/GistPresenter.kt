@@ -84,6 +84,14 @@ class GistPresenter {
     return null
   }
 
+  fun gistSelected(gist: Gist) {
+    if (gist.htmlUrl != null) {
+      view?.openGistHtmlUrl(gist.htmlUrl!!)
+    } else {
+      view?.showNoUrlExist()
+    }
+  }
+
   fun cleanUp() {
     view = null
     if (disposable?.isDisposed ?: false) {

@@ -1,5 +1,7 @@
 package me.anwarshahriar.rxjavademo.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -45,9 +47,14 @@ class MainActivity : AppCompatActivity(), GistView {
     progress = findViewById(R.id.progress)
     textGistStatus = findViewById(R.id.text_gist_status)
 
+    val adapter = GistAdapter()
+    adapter.setOnGistItemClickListener(object: GistAdapter.OnGistItemClickListener {
+      override fun onGistItemClick(gist: Gist) {
+        gistPresenter.gistSelected(gist)
+      }
+    })
     val layoutManager = LinearLayoutManager(this)
     gistList.layoutManager = layoutManager
-    val adapter = GistAdapter()
     gistList.adapter = adapter
     gistList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
   }
@@ -80,6 +87,19 @@ class MainActivity : AppCompatActivity(), GistView {
 
   override fun hideLoading() {
     progress.visibility = View.GONE
+  }
+
+  override fun openGistHtmlUrl(url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    if (intent.resolveActivity(packageManager) != null) {
+      startActivity(intent)
+    } else {
+      Toast.makeText(this, "No browser available to open the url", Toast.LENGTH_LONG).show()
+    }
+  }
+
+  override fun showNoUrlExist() {
+    Toast.makeText(this, "No web preview exist", Toast.LENGTH_SHORT).show()
   }
 
   override fun getUsername(): String? {

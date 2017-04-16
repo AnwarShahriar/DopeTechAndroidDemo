@@ -8,11 +8,16 @@ import android.widget.TextView
 import java.util.ArrayList
 import me.anwarshahriar.rxjavademo.model.Gist
 
-internal class GistAdapter : RecyclerView.Adapter<GistViewHolder>() {
-  private var gists: List<Gist>?
+internal class GistAdapter : RecyclerView.Adapter<GistAdapter.GistViewHolder>() {
+  private var onGistItemClickListener: OnGistItemClickListener? = null
+  private var gists: List<Gist>
 
   init {
     gists = ArrayList<Gist>()
+  }
+
+  fun setOnGistItemClickListener(onGistItemClickListener: OnGistItemClickListener) {
+    this.onGistItemClickListener = onGistItemClickListener
   }
 
   fun setData(data: List<Gist>) {
@@ -27,20 +32,27 @@ internal class GistAdapter : RecyclerView.Adapter<GistViewHolder>() {
   }
 
   override fun onBindViewHolder(holder: GistViewHolder, position: Int) {
-    val gist = gists!![position]
+    val gist = gists[position]
     holder.bind(gist)
   }
 
   override fun getItemCount(): Int {
-    return gists?.size ?: 0
+    return gists.size
   }
-}
 
-internal class GistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-  private val textGistName: TextView = itemView.findViewById(android.R.id.text1) as TextView
+  inner class GistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val textGistName: TextView = itemView.findViewById(android.R.id.text1) as TextView
 
-  fun bind(data: Gist) {
-    val gistName = data.files?.entries?.iterator()?.next()?.value?.fileName
-    textGistName.text = gistName
+    fun bind(data: Gist) {
+      val gistName = data.files?.entries?.iterator()?.next()?.value?.fileName
+      textGistName.text = gistName
+      itemView.setOnClickListener {
+        onGistItemClickListener?.onGistItemClick(data)
+      }
+    }
+  }
+
+  interface OnGistItemClickListener {
+    fun onGistItemClick(gist: Gist)
   }
 }
