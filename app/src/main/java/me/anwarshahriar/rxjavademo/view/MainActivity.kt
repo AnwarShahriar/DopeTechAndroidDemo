@@ -14,6 +14,9 @@ import android.widget.Toast
 import me.anwarshahriar.rxjavademo.model.Gist
 import me.anwarshahriar.rxjavademo.presenter.GistPresenter
 import me.anwarshahriar.rxjavademo.R
+import me.anwarshahriar.rxjavademo.di.component.DaggerGistComponent
+import me.anwarshahriar.rxjavademo.di.module.GistModule
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), GistView {
 
@@ -22,13 +25,16 @@ class MainActivity : AppCompatActivity(), GistView {
   lateinit var progress: View
   lateinit var textGistStatus: View
 
-  lateinit var gistPresenter: GistPresenter
+  @Inject lateinit var gistPresenter: GistPresenter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    gistPresenter = GistPresenter()
+    DaggerGistComponent.builder()
+        .gistModule(GistModule())
+        .build()
+        .inject(this)
 
     init()
 

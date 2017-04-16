@@ -16,7 +16,7 @@ import java.io.IOException
 import java.util.*
 import java.util.concurrent.Callable
 
-class GistPresenter {
+class GistPresenter(val gson: Gson, val client: OkHttpClient) {
   private var view: GistView? = null
   private var disposable: Disposable? = null
 
@@ -71,12 +71,11 @@ class GistPresenter {
   @Throws(IOException::class)
   private fun getGists(@NonNull username: String): List<Gist>? {
     val url = "https://api.github.com/users/$username/gists"
-    val client = OkHttpClient()
     val gistsRequest = Request.Builder().url(url).build()
     val call = client.newCall(gistsRequest)
     val response = call.execute()
     if (response.isSuccessful) {
-      return Gson().fromJson<List<Gist>>(response.body().charStream(),
+      return gson.fromJson<List<Gist>>(response.body().charStream(),
           object : TypeToken<List<Gist>>() {
 
           }.type)
