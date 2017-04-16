@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -26,8 +25,8 @@ import io.reactivex.schedulers.Schedulers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
+import me.anwarshahriar.rxjavademo.model.Gist;
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -126,14 +125,6 @@ public class MainActivity extends AppCompatActivity {
     }
   }
 
-  private static class Gist {
-    @SerializedName("files") Map<String, File> files;
-  }
-
-  private static class File {
-    @SerializedName("filename") String fileName;
-  }
-
   private static class GistAdapter extends RecyclerView.Adapter<GistViewHolder> {
     List<Gist> gists;
 
@@ -171,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void bind(Gist data) {
-      String gistName = data.files.entrySet().iterator().next().getValue().fileName;
+      String gistName = data.getFiles().entrySet().iterator().next().getValue().getFileName();
       textGistName.setText(gistName);
     }
   }
