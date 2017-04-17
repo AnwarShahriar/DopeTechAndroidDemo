@@ -3,6 +3,7 @@ package me.anwarshahriar.rxjavademo.view
 import android.net.Uri
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -96,8 +97,9 @@ class MainActivity : AppCompatActivity(), GistView {
   }
 
   override fun openGistHtmlUrl(url: String) {
-    val customTabIntent = CustomTabsIntent.Builder().build()
-    customTabIntent.launchUrl(this, Uri.parse(url))
+    val customTabIntentBuidler = CustomTabsIntent.Builder().addDefaultShareMenuItem()
+    customTabIntentBuidler.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
+    customTabIntentBuidler.build().launchUrl(this, Uri.parse(url))
   }
 
   override fun showNoUrlExist() {
