@@ -19,12 +19,15 @@ import java.util.concurrent.Callable
 class GistPresenter(val gson: Gson, val client: OkHttpClient) {
   private var view: GistView? = null
   private var disposable: Disposable? = null
+  private var gists: List<Gist>? = null
 
   fun setView(view: GistView) {
     this.view = view
 
-    view.hideLoading()
-    view.showNoGistsStatus()
+    if (gists == null || gists?.size == 0) {
+      view.hideLoading()
+      view.showNoGistsStatus()
+    }
   }
 
   fun loadGists() {
@@ -44,8 +47,9 @@ class GistPresenter(val gson: Gson, val client: OkHttpClient) {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe({ gists ->
-          updateStatus(gists)
-          view?.showGists(gists)
+          this.gists = gists
+          updateStatus(this.gists)
+          view?.showGists(this.gists!!)
         }) { updateStatus(null) }
   }
 
