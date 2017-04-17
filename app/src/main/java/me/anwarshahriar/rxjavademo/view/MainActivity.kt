@@ -1,8 +1,8 @@
 package me.anwarshahriar.rxjavademo.view
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -96,12 +96,8 @@ class MainActivity : AppCompatActivity(), GistView {
   }
 
   override fun openGistHtmlUrl(url: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    if (intent.resolveActivity(packageManager) != null) {
-      startActivity(intent)
-    } else {
-      Toast.makeText(this, "No browser available to open the url", Toast.LENGTH_LONG).show()
-    }
+    val customTabIntent = CustomTabsIntent.Builder().build()
+    customTabIntent.launchUrl(this, Uri.parse(url))
   }
 
   override fun showNoUrlExist() {

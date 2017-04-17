@@ -48,6 +48,8 @@ dependencies {
 
   compile 'com.google.dagger:dagger:2.10'
   kapt 'com.google.dagger:dagger-compiler:2.10'
+
+  compile 'com.android.support:customtabs:25.3.0'
 }
 
 repositories {
